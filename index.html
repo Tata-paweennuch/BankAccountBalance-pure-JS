@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="./Assets/63251520-hand-holding-passbook-.jpg">
+</head>
+<body>
+    <header>
+        <h1>Account Balance</h1>
+        <div class="available-bal">
+            <h4>£ <span class="current-balance">20,000.50</span></h4>
+            <p>Available balance</p>
+        </div>
+        <div class="adding-transaction">
+            <input type="text" class="description" placeholder="Description" pattern="[A-Za-z0-9]*" required>
+            <input type="text" class="amount" placeholder="Amount" pattern="[0-9]*" required>
+            <select name="type-of-transaction" id="type" required>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+            <button class="add-btn">Add</button>
+        </div>
+    </header>
+    <main>
+        <div class="tableTransaction">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date-time</th>
+                        <th>Description</th>
+                        <th>Incomes</th>
+                        <th>Expenses</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Information of each transaction in separated row -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
