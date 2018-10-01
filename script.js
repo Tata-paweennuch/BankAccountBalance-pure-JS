@@ -47,7 +47,7 @@ const grabingData = () => {
             return 0;
         }
     }
-    //let typeTrans = typeOfTransaction.options[typeOfTransaction.selectedIndex].value;
+    let typeTrans = typeOfTransaction.options[typeOfTransaction.selectedIndex].value;
     let accumBalance = Object.keys(arrayOfTransaction).reduce(function (previous, key) {
                     previous.net += arrayOfTransaction[key].net;
                         return previous;
@@ -58,6 +58,7 @@ const grabingData = () => {
     arrayOfTransaction.push({
         date: dateTime,
         description: descTrans,
+        type: typeTrans,
         income: incomeAmount(),
         expense: expenseAmount(),
         net: incomeAmount() - expenseAmount(),
@@ -83,6 +84,12 @@ const addingData = () => {
     let eachTrans;
     arrayOfData.forEach(transaction => {
         eachTrans = document.createElement('tr');
+        if (transaction.type == 'income') {
+            eachTrans.style.backgroundColor = 'rgba(86, 194, 122, 0.4)';
+        } else if (transaction.type == 'expense') {
+            eachTrans.style.backgroundColor = 'rgba(241, 72, 72, 0.3)';
+        }
+
         const transDetail = `
             <td>${transaction.date}</td>
             <td>${transaction.description}</td>

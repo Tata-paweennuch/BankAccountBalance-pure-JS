@@ -6,14 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="shortcut icon" href="./Assets/63251520-hand-holding-passbook-.jpg">
 </head>
 <body>
     <header>
-        <h1>Account Balance</h1>
-        <div class="available-bal">
-            <h4>£ <span class="current-balance">20,000.50</span></h4>
-            <p>Available balance</p>
+        <div class="header-container">
+            <h1 class="mb-1"><i class="fas fa-user-circle"></i> Account Balance</h1>
+            <div class="available-bal mb-1">
+                <h2>£ <span class="current-balance">0</span></h2>
+                <p>Available balance</p>
+            </div>
         </div>
         <div class="adding-transaction">
             <input type="text" class="description" placeholder="Description" pattern="[A-Za-z0-9]*" required>
