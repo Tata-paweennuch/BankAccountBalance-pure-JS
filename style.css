@@ -96,8 +96,15 @@ table {
 
 }
 
-tr {
+tbody tr {
     border-bottom: 1px solid rgb(122, 115, 115);
+}
+
+tfoot tr {
+    border-top: 2px solid rgb(122, 115, 115);
+    border-bottom: 3px solid rgb(122, 115, 115);
+    background-color: #2c3e50;
+    color: #fff;
 }
 
 th {
@@ -113,10 +120,16 @@ th, td {
     /* border: 2px solid rgb(100, 99, 99); */
 }
 
-td {
+tbody tr td {
     /* background-color: rgb(151, 224, 200); */
     font-size: 20px;
     line-height: 32px;
+}
+
+tfoot tr td {
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 500;
 }
 
 /* ======= General: margin, padding ======= */

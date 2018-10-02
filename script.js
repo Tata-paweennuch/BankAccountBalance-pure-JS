@@ -5,6 +5,7 @@ const amount = document.querySelector('.amount');
 const typeOfTransaction = document.querySelector('#type');
 const addBtn = document.querySelector('.add-btn');
 const tableBody = document.querySelector('tbody');
+const tableFoot = document.querySelector('tfoot');
 
 
 // ================= Date and time function =================
@@ -64,7 +65,7 @@ const grabingData = () => {
         net: incomeAmount() - expenseAmount(),
         balance: balance
     });
-    addingData();
+    displayingData();
     description.value = '';
     amount.value = '';
         //typeOfTransaction.options[0];   ---- Fix!! set the option to the default 
@@ -78,9 +79,12 @@ const grabingData = () => {
 }
 
 // ================= Putting data into the bank book(each transaction) =================
-const addingData = () => {
+const displayingData = () => {
     tableBody.innerHTML = '';
+    tableFoot.innerHTML = '';
     let arrayOfData = arrayOfTransaction;
+    // localStorage.setItem('data',JSON.stringify(arrayOfTransaction));
+    // let arrayOfData =  JSON.parse(localStorage.getItem('data'))
     let eachTrans;
     arrayOfData.forEach(transaction => {
         eachTrans = document.createElement('tr');
@@ -100,6 +104,28 @@ const addingData = () => {
         eachTrans.innerHTML = transDetail;
         tableBody.appendChild(eachTrans);
     });
+
+    // Show the total amount of incomes, expenses, and balance
+    let lastBalance = arrayOfData[arrayOfData.length-1].balance;
+    let sumIncomes = Object.keys(arrayOfData).reduce(function (previous, key) {
+        previous.income += arrayOfData[key].income;
+            return previous;
+        }, { income: 0 });
+        
+    let sumExpenses = Object.keys(arrayOfData).reduce(function (previous, key) {
+        previous.expense += arrayOfData[key].expense;
+            return previous;
+        }, { expense: 0 });
+    
+    let footRow = document.createElement('tr');
+    let footDetail = `
+        <td colspan="2">Totals</td>
+        <td>${sumIncomes.income}</td>
+        <td>${sumExpenses.expense}</td>
+        <td>${lastBalance}</td>
+    `;
+    footRow.innerHTML = footDetail;
+    tableFoot.appendChild(footRow);
 }
 
 // =================** Add eventlisteners**==================
