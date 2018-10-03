@@ -63,6 +63,7 @@ button {
     text-align: center;
     font-size: 14px;
     font-weight: 550;
+    margin-left: 10px;
     cursor: pointer;
     outline: none;
     border: none;

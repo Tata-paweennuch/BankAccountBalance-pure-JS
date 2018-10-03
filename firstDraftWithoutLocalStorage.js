@@ -30,21 +30,8 @@ const numberWithCommas = (x) => {
   }
 
 // ================= Putting data into the array of objects(each transaction) =================
-
-  // Get data from the localStorage and convert from JSON to Object
-function getTransactions() {
-    var transactions = localStorage.getItem('data');
-    if (transactions) {                   // if 'transactions' exists
-      return JSON.parse(transactions);    //return it after turning it into a valid JSON object for using in JS
-    } else {
-      return [];                      // otherwise return an empty array
-    }                            
-}
-
 let arrayOfTransaction = [];
 const grabingData = () => {
-    let transactions = getTransactions();
-
     let dateTime = displayDateTime();
     let descTrans = description.value;
     const incomeAmount = () => {
@@ -62,14 +49,14 @@ const grabingData = () => {
         }
     }
     let typeTrans = typeOfTransaction.options[typeOfTransaction.selectedIndex].value;
-    let accumBalance = Object.keys(transactions).reduce(function (previous, key) {
-                    previous.net += transactions[key].net;
+    let accumBalance = Object.keys(arrayOfTransaction).reduce(function (previous, key) {
+                    previous.net += arrayOfTransaction[key].net;
                         return previous;
                     }, { net: 0 });
             //arrayOfTransaction.reduce((a,b,i) => { return cumulativeBalanceArr[i] = a.net + b.net; },0);
     let balance = accumBalance.net + incomeAmount() - expenseAmount();
 
-    transactions.push({
+    arrayOfTransaction.push({
         date: dateTime,
         description: descTrans,
         type: typeTrans,
@@ -78,24 +65,28 @@ const grabingData = () => {
         net: incomeAmount() - expenseAmount(),
         balance: balance
     });
-    localStorage.setItem('data', JSON.stringify(transactions));
-    //localStorage.setItem('data', JSON.stringify(arrayOfTransaction)); 
     displayingData();
     description.value = '';
     amount.value = '';
         //typeOfTransaction.options[0];   ---- Fix!! set the option to the default 
+    
+    // ** Add the current balance to the top**==================
+    let currentBal = arrayOfTransaction[arrayOfTransaction.length-1].balance;
+    let currentBalWithCommas = numberWithCommas(currentBal);
+    availableBalance.innerHTML = currentBalWithCommas;
 
-    return transactions;
+    return arrayOfTransaction;
 }
 
 // ================= Putting data into the bank book(each transaction) =================
 const displayingData = () => {
     tableBody.innerHTML = '';
     tableFoot.innerHTML = '';
-    let dataJSONObj =  getTransactions();
+    let arrayOfData = arrayOfTransaction;
 
+ 
     let eachTrans;
-    dataJSONObj.forEach(transaction => {
+    arrayOfData.forEach(transaction => {
         eachTrans = document.createElement('tr');
 
         if (transaction.type == 'income') {
@@ -124,14 +115,14 @@ const displayingData = () => {
     });
 
     // Show the total amount of incomes, expenses, and balance
-    let lastBalance = dataJSONObj[dataJSONObj.length-1].balance;
-    let sumIncomes = Object.keys(dataJSONObj).reduce(function (previous, key) {
-        previous.income += dataJSONObj[key].income;
+    let lastBalance = arrayOfData[arrayOfData.length-1].balance;
+    let sumIncomes = Object.keys(arrayOfData).reduce(function (previous, key) {
+        previous.income += arrayOfData[key].income;
             return previous;
         }, { income: 0 });
         
-    let sumExpenses = Object.keys(dataJSONObj).reduce(function (previous, key) {
-        previous.expense += dataJSONObj[key].expense;
+    let sumExpenses = Object.keys(arrayOfData).reduce(function (previous, key) {
+        previous.expense += arrayOfData[key].expense;
             return previous;
         }, { expense: 0 });
     
@@ -144,14 +135,9 @@ const displayingData = () => {
     `;
     footRow.innerHTML = footDetail;
     tableFoot.appendChild(footRow);
-
-    // ** Add the current balance to the top corner**==================
-    let currentBal = dataJSONObj[dataJSONObj.length-1].balance;
-    let currentBalWithCommas = numberWithCommas(currentBal);
-    availableBalance.innerHTML = currentBalWithCommas;
 }
 
 // =================** Add eventlisteners**==================
-setTimeout(displayingData, 200);                    // Self-invoking
 addBtn.addEventListener('click', grabingData);
+
 
