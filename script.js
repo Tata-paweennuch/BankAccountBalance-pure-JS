@@ -155,3 +155,22 @@ const displayingData = () => {
 setTimeout(displayingData, 200);                    // Self-invoking
 addBtn.addEventListener('click', grabingData);
 
+
+// *Note: Self-Invoking Anonymous Function
+/* (function(){
+    // some code…
+  })();
+
+! function(){
+    // some code…
+}();
+
+setInterval(doStuff, 10000);  -->  doStuff function will get called every 10 seconds. That is the normal approach most developers seem to go with. However, there is a huge problem with that. The setInterval will call doStuff function exactly at specified time of 10 seconds again and again irrespective of whether doStuff function actually finished doing what it is supposed to do. That is bad and will certainly get you into unexpected results.
+
+! function foo(){
+    // your other code here
+setTimeout(foo, 10000);
+}();
+This is exactly where self-executing functions come in handy. We can do the same task with the help of self-executing function along with setTimeout like this:
+This code will also repeat itself again and again with one difference. setTimeout will never get triggered unless doStuff is finished. A much better approach than using setInterval in this situation.
+ */
