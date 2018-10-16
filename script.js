@@ -18,7 +18,17 @@ const displayDateTime = () => {
     var hours = now.getHours();
     var mins = now.getMinutes();
     var seconds = now.getSeconds();
-    return date + '/' + month + '/' + year + ' ' +hours + ':' + mins + ':' + seconds;
+    
+    const twoDigit = (time) => {
+        if (time < 10){
+            return '0' + time.toString();
+        } else {
+            return time;
+        }        
+    } 
+
+    return `${twoDigit(date)}/${month}/${year} ${twoDigit(hours)}:${twoDigit(mins)}:${twoDigit(seconds)}`;
+    // return date + '/' + month + '/' + year + ' ' +hours + ':' + mins + ':' + seconds;     // Couldn't support 1 digit time ex 20:2:50
 
     //document.write(hour + ':' + mins + ':' + seconds + '<br>');
     //var day = now.getDay(); // 0 for Sunday, 1 for Monday, 2 for Tuesday, and so on
@@ -31,7 +41,7 @@ const numberWithCommas = (x) => {
 
 // ================= Putting data into the array of objects(each transaction) =================
 
-  // Get data from the localStorage and convert from JSON to Object
+  // *** Get data from the localStorage and convert from JSON to Object
 function getTransactions() {
     var transactions = localStorage.getItem('data');
     if (transactions) {                   // if 'transactions' exists
@@ -79,7 +89,6 @@ const grabingData = () => {
         balance: balance
     });
     localStorage.setItem('data', JSON.stringify(transactions));
-    //localStorage.setItem('data', JSON.stringify(arrayOfTransaction)); 
     displayingData();
     description.value = '';
     amount.value = '';
@@ -99,7 +108,7 @@ const displayingData = () => {
         eachTrans = document.createElement('tr');
 
         if (transaction.type == 'income') {
-            eachTrans.style.backgroundColor = 'rgba(86, 194, 122, 0.4)';
+            eachTrans.style.backgroundColor = 'rgba(86, 194, 122, 0.35)';
         } else if (transaction.type == 'expense') {
             eachTrans.style.backgroundColor = 'rgba(241, 72, 72, 0.3)';
         }
@@ -115,9 +124,9 @@ const displayingData = () => {
         const transDetail = `
             <td>${transaction.date}</td>
             <td>${transaction.description}</td>
-            <td>${checkZeroAmount(transaction.income)}</td>
-            <td>${checkZeroAmount(transaction.expense)}</td>
-            <td>${transaction.balance}</td>
+            <td>${numberWithCommas(checkZeroAmount(transaction.income))}</td>
+            <td>${numberWithCommas(checkZeroAmount(transaction.expense))}</td>
+            <td>${numberWithCommas(transaction.balance)}</td>
         `;
         eachTrans.innerHTML = transDetail;
         tableBody.appendChild(eachTrans);
@@ -138,9 +147,9 @@ const displayingData = () => {
     let footRow = document.createElement('tr');
     let footDetail = `
         <td colspan="2">Totals</td>
-        <td>${sumIncomes.income}</td>
-        <td>${sumExpenses.expense}</td>
-        <td>${lastBalance}</td>
+        <td>${numberWithCommas(sumIncomes.income)}</td>
+        <td>${numberWithCommas(sumExpenses.expense)}</td>
+        <td>${numberWithCommas(lastBalance)}</td>
     `;
     footRow.innerHTML = footDetail;
     tableFoot.appendChild(footRow);
