@@ -36,6 +36,9 @@ const displayDateTime = () => {
 
 // ================= Putting commas to the amount of transaction =================
 const numberWithCommas = (x) => {
+    if (x == null) {
+        return 0;
+    }
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
@@ -51,7 +54,7 @@ function getTransactions() {
     }                            
 }
 
-let arrayOfTransaction = [];
+// let arrayOfTransaction = [];   ----> Using LocalStorage instead
 const grabingData = () => {
     let transactions = getTransactions();
 
@@ -80,6 +83,7 @@ const grabingData = () => {
     let balance = accumBalance.net + incomeAmount() - expenseAmount();
 
     transactions.push({
+        id: transactions.length + 1,
         date: dateTime,
         description: descTrans,
         type: typeTrans,
@@ -106,6 +110,7 @@ const displayingData = () => {
     let eachTrans;
     dataJSONObj.forEach(transaction => {
         eachTrans = document.createElement('tr');
+        eachTrans.id = `${transaction.id}`;               /*  For tracing the transaction when deleting transaction*/ 
 
         if (transaction.type == 'income') {
             eachTrans.style.backgroundColor = 'rgba(86, 194, 122, 0.35)';
@@ -113,7 +118,7 @@ const displayingData = () => {
             eachTrans.style.backgroundColor = 'rgba(241, 72, 72, 0.3)';
         }
 
-        let checkZeroAmount = (value) => {
+        const checkZeroAmount = (value) => {
             if ( value == '0' ) {
                 return '-';
             } else {
@@ -122,7 +127,7 @@ const displayingData = () => {
         }
 
         const transDetail = `
-            <td>${transaction.date}</td>
+            <td><i class="far fa-trash-alt bin-icon" onclick="deleteTrans(this)"></i>${transaction.date}</td>
             <td>${transaction.description}</td>
             <td>${numberWithCommas(checkZeroAmount(transaction.income))}</td>
             <td>${numberWithCommas(checkZeroAmount(transaction.expense))}</td>
@@ -160,10 +165,31 @@ const displayingData = () => {
     availableBalance.innerHTML = currentBalWithCommas;
 }
 
+const deleteTrans = (e) => {   
+    let dataJSONObj =  getTransactions();
+    let getID = parseInt(e.parentNode.parentNode.id);
+        // console.log(getID);
+    let afterDeletedData = dataJSONObj.filter( transaction =>  transaction.id !== getID);
+        // console.log(afterDeletedData);
+    
+    // Re-calculating balance after deleting item(s)
+    for (let i = 0 ; i < afterDeletedData.length ; i++) {
+        if (i == 0) {
+            afterDeletedData[0].balance = 0 + afterDeletedData[0].net;
+                // console.log(afterDeletedData[0].balance);
+        } else {
+            afterDeletedData[i].balance = afterDeletedData[i-1].balance + afterDeletedData[i].net;
+                // console.log(afterDeletedData[i].balance);
+        }
+    }
+    localStorage.setItem('data', JSON.stringify(afterDeletedData));
+    displayingData(); 
+}
+
+
 // =================** Add eventlisteners**==================
 setTimeout(displayingData, 200);                    // Self-invoking
 addBtn.addEventListener('click', grabingData);
-
 
 // *Note: Self-Invoking Anonymous Function
 /* (function(){

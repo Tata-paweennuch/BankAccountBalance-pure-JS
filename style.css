@@ -127,6 +127,25 @@ tbody tr td {
     line-height: 32px;
 }
 
+.bin-icon {
+    padding-right: 7px;
+    visibility: hidden;
+}
+
+tbody tr:hover .bin-icon {
+    visibility: visible;
+}
+
+/* span which keeps the id of each transaction */
+.id-transaction {
+    display: none;
+}
+
+tbody tr:hover td {
+    background-color: rgba(161, 159, 154, 0.863);
+}
+
+tbody tr td:first-child,
 tbody tr td:nth-child(2) {
     text-align: left;
     padding-left: 15px;
@@ -146,7 +165,6 @@ tfoot tr td {
     text-align: right;
     padding-right: 25px;
 }
-
 
 /* ======= General: margin, padding ======= */
 .mb-1 {
