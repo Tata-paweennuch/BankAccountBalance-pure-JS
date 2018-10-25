@@ -83,7 +83,7 @@ const grabingData = () => {
     let balance = accumBalance.net + incomeAmount() - expenseAmount();
 
     transactions.push({
-        id: transactions.length + 1,
+        id: new Date(),
         date: dateTime,
         description: descTrans,
         type: typeTrans,
@@ -167,7 +167,7 @@ const displayingData = () => {
 
 const deleteTrans = (e) => {   
     let dataJSONObj =  getTransactions();
-    let getID = parseInt(e.parentNode.parentNode.id);
+    let getID = e.parentNode.parentNode.id;
         // console.log(getID);
     let afterDeletedData = dataJSONObj.filter( transaction =>  transaction.id !== getID);
         // console.log(afterDeletedData);
