@@ -165,25 +165,28 @@ const displayingData = () => {
     availableBalance.innerHTML = currentBalWithCommas;
 }
 
-const deleteTrans = (e) => {   
-    let dataJSONObj =  getTransactions();
-    let getID = e.parentNode.parentNode.id;
-        // console.log(getID);
-    let afterDeletedData = dataJSONObj.filter( transaction =>  transaction.id !== getID);
-        // console.log(afterDeletedData);
+const deleteTrans = (e) => { 
+    if ( window.confirm('!!! Are you sure that you want to permanently delete this transaction ?') ) {
     
-    // Re-calculating balance after deleting item(s)
-    for (let i = 0 ; i < afterDeletedData.length ; i++) {
-        if (i == 0) {
-            afterDeletedData[0].balance = 0 + afterDeletedData[0].net;
-                // console.log(afterDeletedData[0].balance);
-        } else {
-            afterDeletedData[i].balance = afterDeletedData[i-1].balance + afterDeletedData[i].net;
-                // console.log(afterDeletedData[i].balance);
+        let dataJSONObj =  getTransactions();
+        let getID = e.parentNode.parentNode.id;
+            // console.log(getID);
+        let afterDeletedData = dataJSONObj.filter( transaction =>  transaction.id !== getID);
+            // console.log(afterDeletedData);
+        
+        // Re-calculating balance after deleting item(s)
+        for (let i = 0 ; i < afterDeletedData.length ; i++) {
+            if (i == 0) {
+                afterDeletedData[0].balance = 0 + afterDeletedData[0].net;
+                    // console.log(afterDeletedData[0].balance);
+            } else {
+                afterDeletedData[i].balance = afterDeletedData[i-1].balance + afterDeletedData[i].net;
+                    // console.log(afterDeletedData[i].balance);
+            }
         }
+        localStorage.setItem('data', JSON.stringify(afterDeletedData));
+        displayingData(); 
     }
-    localStorage.setItem('data', JSON.stringify(afterDeletedData));
-    displayingData(); 
 }
 
 
