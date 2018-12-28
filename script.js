@@ -62,14 +62,14 @@ const grabingData = () => {
     let descTrans = description.value;
     const incomeAmount = () => {
         if (typeOfTransaction.options[typeOfTransaction.selectedIndex].value == 'income') {
-            return parseInt(amount.value);     
+            return parseFloat(amount.value);     
         } else {
             return 0;
         }
     } 
     const expenseAmount = () => {
         if (typeOfTransaction.options[typeOfTransaction.selectedIndex].value == 'expense') {
-            return  parseInt(amount.value);     
+            return  parseFloat(amount.value);     
         } else {
             return 0;
         }
@@ -115,11 +115,11 @@ const displayingData = () => {
         if (transaction.type == 'income') {
             eachTrans.style.backgroundColor = 'rgba(86, 194, 122, 0.35)';
         } else if (transaction.type == 'expense') {
-            eachTrans.style.backgroundColor = 'rgba(241, 72, 72, 0.3)';
+            eachTrans.style.backgroundColor = 'rgba(204, 41, 54, 0.35)';
         }
 
         const checkZeroAmount = (value) => {
-            if ( value == '0' ) {
+            if ( value === '0.00' ) {
                 return '-';
             } else {
                 return value;
@@ -129,9 +129,9 @@ const displayingData = () => {
         const transDetail = `
             <td><i class="far fa-trash-alt bin-icon" onclick="deleteTrans(this)"></i>${transaction.date}</td>
             <td>${transaction.description}</td>
-            <td>${numberWithCommas(checkZeroAmount(transaction.income))}</td>
-            <td>${numberWithCommas(checkZeroAmount(transaction.expense))}</td>
-            <td>${numberWithCommas(transaction.balance)}</td>
+            <td>${numberWithCommas(checkZeroAmount(transaction.income.toFixed(2)))}</td>
+            <td>${numberWithCommas(checkZeroAmount(transaction.expense.toFixed(2)))}</td>
+            <td>${numberWithCommas(transaction.balance.toFixed(2))}</td>
         `;
         eachTrans.innerHTML = transDetail;
         tableBody.appendChild(eachTrans);
@@ -152,16 +152,16 @@ const displayingData = () => {
     let footRow = document.createElement('tr');
     let footDetail = `
         <td colspan="2">Totals</td>
-        <td>${numberWithCommas(sumIncomes.income)}</td>
-        <td>${numberWithCommas(sumExpenses.expense)}</td>
-        <td>${numberWithCommas(lastBalance)}</td>
+        <td>${numberWithCommas(sumIncomes.income.toFixed(2))}</td>
+        <td>${numberWithCommas(sumExpenses.expense.toFixed(2))}</td>
+        <td>${numberWithCommas(lastBalance.toFixed(2))}</td>
     `;
     footRow.innerHTML = footDetail;
     tableFoot.appendChild(footRow);
 
     // ** Add the current balance to the top corner**==================
     let currentBal = dataJSONObj[dataJSONObj.length-1].balance;
-    let currentBalWithCommas = numberWithCommas(currentBal);
+    let currentBalWithCommas = numberWithCommas(currentBal.toFixed(2));
     availableBalance.innerHTML = currentBalWithCommas;
 }
 
